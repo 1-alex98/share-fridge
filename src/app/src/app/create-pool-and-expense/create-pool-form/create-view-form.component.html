@@ -1,0 +1,50 @@
+<div class="container mt-2">
+  <form [formGroup]="poolForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="name">Name of your Fridge:</label>
+      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" formControlName="name">
+    </div>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)"
+         class="alert alert-danger">
+      <div *ngIf="name.errors.required">
+        Name is required.
+      </div>
+      <div *ngIf="name.errors.minlength">
+        Name must be at least 4 characters long.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Some deeper description(optional):</label>
+      <input type="text" class="form-control" id="description" placeholder="Enter name" name="description" formControlName="description">
+    </div>
+
+    <button type="submit" [disabled]="!poolForm.valid" class="btn btn-primary btn-default">{{pool? "Update":"Create"}} Fridge</button>
+  </form>
+  <hr/>
+  <div *ngIf="pool" class="mt-4">
+    <button class="btn btn-primary" (click)="generateInvite(content)" ><i class="ri-mail-add-line"></i> Generate Invite link</button>
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Generated Invite</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="tokenUrl" class="mt-2">Send this link to your friend:</p>
+        <div class="input-group mb-3  " style="max-width: 500px" *ngIf="tokenUrl">
+          <input type="text" class="form-control" [formControl]="tokenControl">
+          <div class="input-group-append">
+            <button class="input-group-button btn btn-light btn-outline-primary" (click)="toClipBoard()" ><i class="ri-clipboard-line"></i> {{copied?"Copied":"Copy"}}</button>
+          </div>
+        </div>
+        <p>Or let him scan this QR-Code:</p>
+        <qrcode *ngIf="tokenUrl" [qrdata]="tokenUrl" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+    </ng-template>
+
+
+  </div>
+</div>

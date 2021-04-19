@@ -1,0 +1,14 @@
+<div class="alert alert-info" *ngIf="!myPools || myPools.length == 0">
+  <strong>Info!</strong> You seem to have <strong>no</strong> items here... <a routerLink="/pool/create">Create a new Fridge</a>
+</div>
+
+<div class="list-group mt-2" *ngIf="myPools">
+  <a *ngFor="let item of myPools" routerLink="/pool/view/{{item.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{item.name}}</h5>
+      <small>{{item.balance()}}</small>
+    </div>
+    <p class="mb-1">{{item.description}} </p>
+  </a>
+</div>
+

@@ -1,0 +1,58 @@
+<div class="page-container d-flex flex-column" >
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="/"><img style="max-height: 32px" src="logo.png" alt="Logo"/></a>
+
+  <!-- Links -->
+  <ul class="navbar-nav" *ngIf="me">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/pool/view">My Fridge</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/pool/create">Create a new Fridge</a>
+    </li>
+  </ul>
+
+  <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap ml-md-auto">
+    <li class="nav-item text-light" *ngIf="!me" style="max-width: 15rem"><input type="checkbox" [(ngModel)]="checked"> <p (click)="checked = true" class="d-inline"> I agree to <a routerLink="tos">Terms of Service</a> and <a routerLink="privacy">Privacy Statement</a></p></li>
+    <li class="nav-item" *ngIf="me"><a class="nav-link" href="/../logout"><i class="ri-door-open-line"></i> Logout as {{me.displayName}}</a> </li>
+    <li class="nav-item" *ngIf="!me"><a class="nav-link {{checked?'':'disabled'}} logo" href="/../oauth2/authorization/google" disabled="{{checked}}"> <img src="assets/google_sign_in.png"></a> </li>
+  </ul>
+</nav>
+
+<div class="container-fluid content-wrap m-0 mb-2">
+  <router-outlet></router-outlet>
+</div>
+
+  <footer class="bg-dark navbar navbar-dark text-light mt-md-auto" #footer_tag>
+    <div class="container justify-content-md-center">
+      <div class = "row">
+
+        <div class="d-flex flex-row links">
+          <div><a routerLink="/">About</a></div>
+          <div><a routerLink="tos">Terms of Service</a></div>
+          <div><a routerLink="privacy">Privacy Statement</a></div>
+          <div><a href="https://github.com/1-alex98/share-fridge.git">Code on GitHub</a></div>
+          <div><a href="https://play.google.com/store">Android App</a></div>
+          <div><a routerLink="contact">Contact</a></div>
+        </div>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="social mb-4">
+        <p class="social-heading"><small>Creator social media:</small></p>
+        <div class="d-flex flex-row social justify-content-center">
+          <div class="git"><a href="https://github.com/1-alex98"><i class="ri-github-fill"></i></a></div>
+          <div class="in"><a href="https://www.linkedin.com/in/alexander-von-trostorff-714a48181/"><i class="ri-linkedin-box-fill"></i></a></div>
+        </div>
+      </div>
+      <div class="w-100"></div>
+      <div class="copyright">
+        <p class="mb-0"><small>Licensed under MIT License</small></p>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+

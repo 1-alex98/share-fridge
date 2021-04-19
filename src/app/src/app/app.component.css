@@ -1,0 +1,43 @@
+.social {
+  font-size: 2.5rem;
+}
+
+.in {
+  color: blue;
+}
+
+.git *{
+  color: black;
+}
+
+.social-heading {
+  font-size: 1rem;
+}
+
+.links *{
+  font-size: 0.8rem;
+}
+
+.links div{
+  margin: 1rem;
+}
+
+.page-container {
+  min-height: 100vh;
+}
+
+.content-wrap {
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+.logo.disabled{
+  opacity: 0.4;
+  filter: alpha(opacity=40); /* msie */
+
+}

@@ -1,0 +1,20 @@
+<a routerLink="expense/{{expense.identification}}" style=" color: inherit;text-decoration: inherit;">
+  <div class="card">
+    <div class="card-header d-flex flex-row">
+      <div>
+        <svg width="50" height="50" [data-jdenticon-value]="expense.creator.id"></svg>
+      </div>
+      <div>
+        <p class="d-inline">{{expense.creator.displayName}}</p>
+      </div>
+      <div class="ml-md-auto">
+        <h2 class="d-inline">{{expense.myGain()}}€</h2>
+      </div>
+
+    </div>
+    <div class="card-body d-flex flex-row">
+      <h3>{{expense.name}}</h3>
+      <p class="ml-md-auto ml-2">Total spending:{{expense.amountNormalized()}}€</p>
+    </div>
+  </div>
+</a>

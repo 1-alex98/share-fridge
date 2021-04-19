@@ -1,0 +1,30 @@
+<div class="row justify-content-md-center mt-2">
+  <div class="col-4 text-center">
+    <p>Your balance:</p>
+    <h2>{{pool?pool.balance()/100:"loading"}}€</h2>
+  </div>
+</div>
+<div class="row justify-content-md-center">
+  <div class="col-4 text-center">
+    <button class="btn btn-outline-dark" routerLink="/pool/{{pool.id}}/edit"><i class="ri-pencil-line"></i>Edit and invite</button>
+  </div>
+  <div class="col-4 text-center">
+    <button class="btn btn-outline-dark" routerLink="create-expense"><i class="ri-add-circle-line"></i>Add expense</button>
+  </div>
+  <div class="col-4 text-center">
+    <button class="btn btn-outline-dark"><i class="ri-bar-chart-fill"></i>Statistics</button>
+  </div>
+</div>
+
+<div class="row justify-content-md-center mt-2" *ngIf="!pool">
+  <div class="spinner-grow text-primary"></div>
+</div>
+
+<div class="alert alert-info mt-3" *ngIf="!pool || !pool.expenses || pool.expenses.length == 0">
+  <strong>Info!</strong> You seem to have <strong>no</strong> expenses in that fridge... <a routerLink="create-expense">Create an expense</a>
+</div>
+
+
+<div class="d-flex flex-column-reverse mt-3" *ngIf="pool && pool.expenses.length >0">
+  <app-expense-card *ngFor="let expense of pool.expenses" [expense]="expenseToClass(expense)"></app-expense-card>
+</div>

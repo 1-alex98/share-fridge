@@ -1,0 +1,13 @@
+<div class="alert alert-warning" *ngIf="!loggedIn && loggedIn!= null">
+  <strong>Warning!</strong> We could not make you join the fridge. Please log in first.
+</div>
+
+
+<div class="alert alert-success" *ngIf="id">
+  <strong>Success!</strong> You joined the fridge. Have a look at it <a routerLink="/pool/view/{{id}}">here</a>
+</div>
+
+<div class="m-3" *ngIf="!id && loggedIn">
+  <div class="spinner-border text-primary" ></div>
+  <p>Joining fridge</p>
+</div>
