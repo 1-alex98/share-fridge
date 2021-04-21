@@ -1,7 +1,7 @@
 <div class="page-container d-flex flex-column" >
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <!-- Brand/logo -->
-  <a class="navbar-brand" href="/"><img style="max-height: 32px" src="logo.png" alt="Logo"/></a>
+  <a class="navbar-brand" href="/"><img alt="Logo" src="assets/logo.png" style="max-height: 32px"/></a>
 
   <!-- Links -->
   <ul class="navbar-nav" *ngIf="me">
@@ -19,6 +19,7 @@
     <li class="nav-item" *ngIf="!me"><a class="nav-link {{checked?'':'disabled'}} logo" href="/../oauth2/authorization/google" disabled="{{checked}}"> <img src="assets/google_sign_in.png"></a> </li>
   </ul>
 </nav>
+  <ngb-alert *ngIf="errorMessage" type="warn">{{ errorMessage }}</ngb-alert>
 
 <div class="container-fluid content-wrap m-0 mb-2">
   <router-outlet></router-outlet>

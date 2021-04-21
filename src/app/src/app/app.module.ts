@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoggedInComponent } from './logged-in/logged-in.component';
-import { StatusNotFoundComponent } from './status-not-found/status-not-found.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {LoggedInComponent} from './logged-in/logged-in.component';
+import {StatusNotFoundComponent} from './status-not-found/status-not-found.component';
 import {ViewPoolModule} from "./view-pool/view-pool.module";
-import { HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {CreatePoolAndExpenseModule} from "./create-pool-and-expense/create-pool-and-expense.module";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModule} from "./info/info.module";
 import {FormsModule} from "@angular/forms";
 
@@ -20,6 +20,7 @@ import {FormsModule} from "@angular/forms";
   ],
   imports: [
     InfoModule,
+    NgbAlertModule,
     BrowserModule,
     CreatePoolAndExpenseModule,
     ViewPoolModule,

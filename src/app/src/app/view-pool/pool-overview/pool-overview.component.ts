@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {Pool} from "../../communication/pool";
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {PoolService} from "../../communication/pool.service";
 import {PoolClass} from "../../communication/pool-class";
-import {Expense} from "../../communication/expense";
-import {ExpenseClass} from "../../communication/expense-class";
+import {UserService} from "../../communication/user.service";
+import {MemberClass} from "../../communication/expense-class";
 
 @Component({
   selector: 'app-pool-overview',
@@ -13,10 +12,14 @@ import {ExpenseClass} from "../../communication/expense-class";
 })
 export class PoolOverviewComponent implements OnInit {
   pool: PoolClass;
+  me: MemberClass;
 
-  constructor(private route:ActivatedRoute, private poolService:PoolService) { }
+  constructor(private route: ActivatedRoute, private poolService: PoolService, private userService: UserService) {
+  }
 
   ngOnInit(): void {
+    this.userService.getMe().subscribe(value => this.me = value);
+
     this.route.params.subscribe(value => {
       let poolId = value["id"];
       this.poolService.getMyPools().subscribe(pools => {
@@ -25,7 +28,7 @@ export class PoolOverviewComponent implements OnInit {
     })
   }
 
-  expenseToClass(expense: Expense) :ExpenseClass{
-    return ExpenseClass.fromObject(expense);
+  cssClass(number: number): string {
+    return number > 0 ? "gain" : number == 0 ? "" : "loss";
   }
 }

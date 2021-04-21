@@ -1,12 +1,6 @@
 package com.sharefridge.pool;
 
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSSigner;
-import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.JWTParser;
-import com.nimbusds.jwt.SignedJWT;
 import com.sharefridge.frame.JwtService;
 import com.sharefridge.frame.Utils;
 import com.sharefridge.pool.expense.Expense;
@@ -19,8 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.security.SecureRandom;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -53,11 +45,12 @@ public class PoolService {
         return poolRepository.save(pool);
     }
 
-    public Pool addExpense(String id, Expense expense) {
+    public String addExpense(String id, Expense expense) {
         Pool pool = getPoolOfAccessOk(id);
         expense.setCreator(new Member(SecurityContextHolder.getContext().getAuthentication()));
         pool.getExpenses().add(expense);
-        return poolRepository.save(pool);
+        poolRepository.save(pool);
+        return expense.getIdentification();
     }
 
     public Pool patchPool(Pool poolUser) {

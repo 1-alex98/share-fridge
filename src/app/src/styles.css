@@ -2,6 +2,15 @@
 html {
   height: 100%;
 }
+
 body {
   min-height: 100%;
+}
+
+.loss {
+  color: red;
+}
+
+.gain {
+  color: green;
 }

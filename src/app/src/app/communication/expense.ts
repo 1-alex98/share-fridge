@@ -8,8 +8,9 @@ export class Expense{
   name:string;
   category:string;
   shop:string;
-  description:string;
-  amount:number;
+  description: string;
+  date: string;
+  amount: number;
   imageName:string[];
   creator:Member;
   involved:Member[];

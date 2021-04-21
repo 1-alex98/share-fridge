@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExpenseClass} from "../../communication/expense-class";
+import {ExpenseClass, MemberClass} from "../../communication/expense-class";
 
 @Component({
   selector: 'app-expense-card',
@@ -9,10 +9,15 @@ import {ExpenseClass} from "../../communication/expense-class";
 export class ExpenseCardComponent implements OnInit {
   @Input("expense")
   expense: ExpenseClass;
+  @Input("me") me: MemberClass;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
+  cssClass(number: number): string {
+    return number > 0 ? "gain" : number == 0 ? "" : "loss;"
+  }
 }

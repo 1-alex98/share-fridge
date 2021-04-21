@@ -1,4 +1,4 @@
-package com.sharefridge.security;
+package com.sharefridge.securityutils;
 
 import com.sharefridge.frame.MemberEntity;
 import org.springframework.security.access.PermissionEvaluator;

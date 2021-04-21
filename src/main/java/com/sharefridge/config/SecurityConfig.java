@@ -1,8 +1,8 @@
 package com.sharefridge.config;
 
-import com.sharefridge.security.CustomAuthenticationFailureHandler;
-import com.sharefridge.security.CustomAuthenticationSuccessHandler;
-import com.sharefridge.security.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.sharefridge.securityutils.CustomAuthenticationFailureHandler;
+import com.sharefridge.securityutils.CustomAuthenticationSuccessHandler;
+import com.sharefridge.securityutils.HttpCookieOAuth2AuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

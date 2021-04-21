@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "./communication/user.service";
 import {MemberClass} from "./communication/expense-class";
+import {ErrorInterceptor} from "./communication/error-interceptor.service";
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,20 @@ export class AppComponent implements OnInit, AfterViewInit{
   checked: boolean;
   @ViewChild('footer_tag') footer: ElementRef;
   footerHeight: number;
+  errorMessage: string;
 
 
-  constructor(private userService:UserService) {
+  constructor(private userService: UserService, private errorService: ErrorInterceptor) {
   }
-  ngOnInit(): void{
+
+  ngOnInit(): void {
     this.userService.getMe().subscribe(
-      meUser=> this.me = meUser,
+      meUser => this.me = meUser,
       error => this.me = null
     )
+    this.errorService.currentError.subscribe(error => {
+      this.errorMessage = error;
+    })
   }
 
   ngAfterViewInit() {

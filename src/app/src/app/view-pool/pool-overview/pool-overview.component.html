@@ -1,18 +1,21 @@
 <div class="row justify-content-md-center mt-2">
   <div class="col-4 text-center">
     <p>Your balance:</p>
-    <h2>{{pool?pool.balance()/100:"loading"}}€</h2>
+    <h2 *ngIf="me" class="{{cssClass(pool?.balance(me))}}">{{pool ? pool.balance(me) : "loading"}}€</h2>
   </div>
 </div>
 <div class="row justify-content-md-center">
   <div class="col-4 text-center">
-    <button class="btn btn-outline-dark" routerLink="/pool/{{pool.id}}/edit"><i class="ri-pencil-line"></i>Edit and invite</button>
+    <button class="btn btn-outline-dark" routerLink="/pool/{{pool?.id}}/edit"><i class="ri-pencil-line"></i>Edit and
+      invite
+    </button>
   </div>
   <div class="col-4 text-center">
     <button class="btn btn-outline-dark" routerLink="create-expense"><i class="ri-add-circle-line"></i>Add expense</button>
   </div>
   <div class="col-4 text-center">
-    <button class="btn btn-outline-dark"><i class="ri-bar-chart-fill"></i>Statistics</button>
+    <button class="btn btn-outline-dark" routerLink="/pool/{{pool?.id}}/stats"><i class="ri-bar-chart-fill"></i>Statistics
+    </button>
   </div>
 </div>
 
@@ -26,5 +29,5 @@
 
 
 <div class="d-flex flex-column-reverse mt-3" *ngIf="pool && pool.expenses.length >0">
-  <app-expense-card *ngFor="let expense of pool.expenses" [expense]="expenseToClass(expense)"></app-expense-card>
+  <app-expense-card *ngFor="let expense of pool.getSortedExpenses()" [expense]="expense" [me]="me"></app-expense-card>
 </div>

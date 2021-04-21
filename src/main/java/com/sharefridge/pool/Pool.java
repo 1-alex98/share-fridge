@@ -5,6 +5,7 @@ import com.sharefridge.frame.Utils;
 import com.sharefridge.pool.expense.Expense;
 import com.sharefridge.pool.member.Member;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Data
 @Document
+@EqualsAndHashCode(of = "id")
 public class Pool implements MemberEntity {
     @Id
     private String id;

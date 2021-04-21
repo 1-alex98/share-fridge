@@ -1,14 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule} from "@angular/forms";
-import { CreateViewFormComponent } from './create-pool-form/create-view-form.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CreateViewFormComponent} from './create-pool-form/create-view-form.component';
 import {RouterModule} from "@angular/router";
 import {QRCodeModule} from "angularx-qrcode";
-import {NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
-import { InviteComponent } from './invite/invite.component';
-import { CreateExpenseComponent } from './create-expense/create-expense.component';
+import {NgbCollapseModule, NgbDatepickerModule, NgbDropdownModule, NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
+import {InviteComponent} from './invite/invite.component';
+import {CreateExpenseComponent} from './create-expense/create-expense.component';
 import {NgxJdenticonModule} from "ngx-jdenticon";
-
 
 
 @NgModule({
@@ -18,6 +17,7 @@ import {NgxJdenticonModule} from "ngx-jdenticon";
     CreateExpenseComponent
   ],
   imports: [
+    NgbDatepickerModule,
     NgbModalModule,
     QRCodeModule,
     RouterModule.forRoot([{
@@ -38,7 +38,10 @@ import {NgxJdenticonModule} from "ngx-jdenticon";
       }]),
     ReactiveFormsModule,
     CommonModule,
-    NgxJdenticonModule
+    NgxJdenticonModule,
+    FormsModule,
+    NgbCollapseModule,
+    NgbDropdownModule
   ]
 })
 export class CreatePoolAndExpenseModule { }

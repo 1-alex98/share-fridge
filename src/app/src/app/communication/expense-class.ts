@@ -16,25 +16,33 @@ export class ExpenseClass{
   name:string;
   category:string;
   shop:string;
-  description:string;
-  amount:number;
+  description: string;
+  date: string;
+  amount: number;
   imageName:string[];
   creator:Member;
   involved:Member[];
 
 
-
-  public static fromObject(obj):ExpenseClass {
+  public static fromObject(obj): ExpenseClass {
     let userRef: ExpenseClass = new ExpenseClass();
     Object.assign(userRef, obj);
     return userRef;
   }
 
   amountNormalized() {
-    return this.amount / 100;
+    return this.normalize(this.amount);
   }
 
-  myGain() {
-    return this.amount / 200;
+  myGain(me: MemberClass) {
+    let perPerson = this.amount / this.involved.length;
+    if (this.creator.id == me.id) {
+      return this.normalize(this.amount - perPerson);
+    }
+    return this.normalize(-1 * perPerson);
+  }
+
+  private normalize(amount: number) {
+    return Math.round(amount) / 100;
   }
 }

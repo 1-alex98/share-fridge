@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sharefridge.pool.expense.item.ExpenseItem;
 import com.sharefridge.pool.member.Member;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@EqualsAndHashCode(of = "identification")
 public class Expense {
     private String identification= UUID.randomUUID().toString();
     @NotNull
@@ -23,9 +23,10 @@ public class Expense {
     private String shop;
     private String category;
     @NotNull
+    @Min(0)
     private long amount;
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private List<String> imageNames;
     private List<ExpenseItem> items;

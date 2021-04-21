@@ -1,9 +1,10 @@
 <div class="m-2 container-fluid">
-  <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="expenseForm" class="d-block">
 
     <div class="form-group">
       <label for="name">Name of your expense:</label>
-      <input type="text" class="form-control d-inline w-auto ml-2" id="name" placeholder="Enter name" name="name" formControlName="name">
+      <input class="form-control d-inline w-auto ml-2 border-primary" formControlName="name" id="name" name="name"
+             placeholder="Enter name" type="text">
     </div>
     <div *ngIf="name.invalid && (name.dirty || name.touched)"
          class="alert alert-danger">
@@ -16,11 +17,13 @@
     </div>
     <div class="form-group">
       <label for="description">Some deeper description(optional):</label>
-      <input type="text" class="form-control d-inline" style="max-width: 30rem" id="description" placeholder="Enter description" name="description" formControlName="description">
+      <input class="form-control d-inline ml-2" formControlName="description" id="description" name="description"
+             placeholder="Enter description" style="max-width: 30rem" type="text">
     </div>
     <div class="form-group" >
       <label for="amount">Money spent:</label>
-      <input type="number" style="max-width: 10rem" class="form-control d-inline ml-2 mr-2" id="amount" placeholder="Enter amount" name="amount" formControlName="amount">
+      <input class="form-control d-inline ml-2 mr-2 border-primary" formControlName="amount" id="amount" name="amount"
+             placeholder="Enter amount" style="max-width: 10rem" type="number">
       <p class="d-inline">€</p>
     </div>
     <div *ngIf="amount.invalid && (amount.dirty || amount.touched)"
@@ -29,20 +32,120 @@
         Amount is required.
       </div>
     </div>
+    <form class="form-inline mb-2">
+      <div class="form-group">
+        <label>Date: </label>
+        <div class="input-group ml-2">
+
+          <input #c2="ngModel" #d="ngbDatepicker"
+                 [(ngModel)]="date" class="form-control" name="dp" ngbDatepicker placeholder="yyyy-mm-dd">
+          <div class="input-group-append">
+            <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"><i
+              class="ri-calendar-line"></i></button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!c2.valid"
+           class="alert alert-danger">
+        <div>
+          Date is not valid
+        </div>
+      </div>
+    </form>
     <p>Who is it for:</p>
     <div class="d-flex flex-row align-items-start m-2 mb-4" *ngIf="members">
-      <div #item *ngFor="let member of members" (click)="toggle(member, item)" class="card shadow p-3 mr-2 bg-white rounded member-card selected-member">
+      <div #item *ngFor="let member of members" (click)="toggle(member, item)"
+           class="card shadow p-3 mr-2 bg-white rounded member-card selected-member">
         <div class="card-body start">
           <svg width="50" height="50" [data-jdenticon-value]="member.id"></svg>
           <p class="unselectable">{{member.displayName}}</p>
         </div>
       </div>
     </div>
+    <div *ngIf="selectedMembers && selectedMembers.length == 0"
+         class="alert alert-danger">
+      <div>
+        At least one needs to be selected.
+      </div>
+    </div>
     <div class="m-3" *ngIf="!members">
-      <div class="spinner-border text-primary" ></div>
+      <div class="spinner-border text-primary"></div>
       <p>Loading fridge members</p>
     </div>
 
-    <button type="submit" [disabled]="!expenseForm.valid" class="btn btn-primary btn-default">Create Expense</button>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="mb-2">
+      <div class="card">
+        <div class="card-body">
+          <div class="container-fluid row">
+            <div class="col-4">
+              <div class="input-group">
+                <input class="form-control" content="groceries" formControlName="category" id="category" name="category"
+                       placeholder="Enter category" style="min-width: 10rem" type="text">
+                <div class="input-group-append">
+                  <div class="btn-group mr-3">
+                    <div aria-label="Button group with nested dropdown" class="btn-group" ngbDropdown role="group">
+                      <button class="btn btn-outline-primary" ngbDropdownToggle>Known Categories</button>
+                      <div class="dropdown-menu" ngbDropdownMenu>
+                        <button (click)="selectCategory(cat)" *ngFor="let cat of knownCategories"
+                                ngbDropdownItem>{{cat}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="category.invalid && (category.dirty || category.touched)"
+                   class="alert alert-danger">
+                <div *ngIf="category.errors.required">
+                  Category is required.
+                </div>
+              </div>
+              <div *ngIf="knownCategories.indexOf(category.value) == -1"
+                   class="alert alert-info">
+                <div>
+                  New Category will be created
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group">
+                <input class="form-control" content="" formControlName="shop" id="shop" name="shop"
+                       placeholder="Enter shop" style="min-width: 10rem" type="text">
+                <div class="input-group-append">
+                  <div class="btn-group mr-3">
+                    <div aria-label="Button group with nested dropdown" class="btn-group" ngbDropdown role="group">
+                      <button class="btn btn-outline-primary" ngbDropdownToggle>Known Shops</button>
+                      <div class="dropdown-menu" ngbDropdownMenu>
+                        <button (click)="selectShop(shop)" *ngFor="let shop of knownShops"
+                                ngbDropdownItem>{{shop}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="shop.value!= '' && knownShops.indexOf(shop.value) == -1"
+                   class="alert alert-info">
+                <div>
+                  New Shop will be created
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="custom-file">
+                <input class="custom-file-input" id="customFile" type="file">
+                <label class="custom-file-label" for="customFile">Image of receipt</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed" [disabled]="!isCollapsed"
+            aria-controls="collapseExample" class="btn btn-outline-secondary"
+            type="button">
+      More options
+    </button>
+    <button (click)="onSubmit()" [disabled]="!expenseForm.valid || !c2.valid || selectedMembers.length == 0"
+            class="btn btn-primary btn-default ml-2" type="submit">Create Expense
+    </button>
   </form>
 </div>

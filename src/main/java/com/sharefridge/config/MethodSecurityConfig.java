@@ -1,6 +1,6 @@
 package com.sharefridge.config;
 
-import com.sharefridge.security.CustomPermissionEvaluator;
+import com.sharefridge.securityutils.CustomPermissionEvaluator;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;

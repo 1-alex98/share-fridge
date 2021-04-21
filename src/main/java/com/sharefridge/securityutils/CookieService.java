@@ -1,6 +1,5 @@
-package com.sharefridge.security;
+package com.sharefridge.securityutils;
 
-import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.sharefridge.frame.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +7,10 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.SerializationUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
 import java.util.Base64;
 import java.util.Optional;
 
