@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~11.2.9",
     "@angular/router": "~11.2.9",
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
+    "@swimlane/ngx-charts": "^17.0.1",
     "angularx-qrcode": "^11.0.0",
     "bootstrap": "^4.6.0",
     "jdenticon": "^3.1.0",
