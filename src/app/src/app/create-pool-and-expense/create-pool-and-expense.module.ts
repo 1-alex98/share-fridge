@@ -35,6 +35,10 @@ import {NgxJdenticonModule} from "ngx-jdenticon";
       {
         path: "pool/view/:id/create-expense",
         component: CreateExpenseComponent
+      },
+      {
+        path: "pool/view/:id/expense/:expenseId",
+        component: CreateExpenseComponent
       }]),
     ReactiveFormsModule,
     CommonModule,

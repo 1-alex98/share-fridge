@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Expense} from "../../communication/expense";
-import {MemberClass} from "../../communication/expense-class";
+import {ExpenseClass, MemberClass} from "../../communication/expense-class";
 import {PoolClass} from "../../communication/pool-class";
 import {PoolService} from "../../communication/pool.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -28,11 +28,12 @@ export class CreateExpenseComponent implements OnInit {
   isCollapsed = true;
   knownCategories: string[];
   knownShops: string[];
-
+  originalExpense: ExpenseClass;
+  private uploadForm: any;
 
   constructor(private poolService: PoolService, private route: ActivatedRoute,
               private calendar: NgbCalendar, private expenseService: ExpenseService,
-              private router: Router) {
+              private router: Router, private formBuilder: FormBuilder) {
   }
 
   get shop() {
@@ -43,20 +44,32 @@ export class CreateExpenseComponent implements OnInit {
     return this.expenseForm.get('category');
   }
 
+  get image() {
+    return this.uploadForm.get('image');
+  }
+
   ngOnInit(): void {
-    this.route.params.subscribe(value => {
-      let poolId = value["id"];
+    this.route.params.subscribe(pathParameters => {
+      let poolId = pathParameters["id"];
       this.poolService.getPool(poolId).subscribe(pool => {
         this.pool = pool;
         this.members = pool.members.map(value1 => MemberClass.fromObject(value1));
         this.selectedMembers = Object.assign([], this.members);
+        if (pathParameters["expenseId"]) {
+
+        }
         this.knownCategoriesAndShops();
       });
     })
 
+    this.uploadForm = this.formBuilder.group({
+      image: ['']
+    });
+
     this.date = this.calendar.getToday();
 
     this.defaultCategoriesAndShops();
+
   }
 
   onSubmit() {
@@ -66,9 +79,31 @@ export class CreateExpenseComponent implements OnInit {
     expense.involved = this.selectedMembers;
     expense.amount = Math.round(expense.amount * Math.pow(10, this.pool.commaPosition));
     expense.date = this.date.year + "-" + this.date.month + "-" + this.date.day;
-    this.expenseService.createExpense(expense, this.pool.id).subscribe(value => {
-      this.router.navigate(["/pool", "view", this.pool.id]);
+
+    this.expenseService.createExpense(expense, this.pool.id).subscribe(expenseId => {
+      if (this.image.value) {
+        this.poolService.uploadImage(this.image.value, this.pool.id, expenseId).subscribe(value => {
+          this.backToPool();
+        }, error => {
+          console.error(error);
+          alert("Image upload failed");
+          this.backToPool();
+        })
+      } else {
+        this.backToPool();
+      }
     })
+  }
+
+  onFileSelect(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image.setValue(file);
+    }
+  }
+
+  private backToPool() {
+    this.router.navigate(["/pool", "view", this.pool.id]);
   }
 
   get name() {

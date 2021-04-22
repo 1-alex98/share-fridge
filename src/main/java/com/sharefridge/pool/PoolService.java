@@ -7,11 +7,13 @@ import com.sharefridge.pool.expense.Expense;
 import com.sharefridge.pool.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +21,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PoolService {
 
     private final PoolRepository poolRepository;
@@ -92,5 +95,18 @@ public class PoolService {
         Member member = new Member(SecurityContextHolder.getContext().getAuthentication());
         pool.getMembers().add(member);
         return poolRepository.save(pool).getId();
+    }
+
+    public void uploadImage(String poolId, String expenseId, MultipartFile file) {
+        log.debug("Uploading File for expense with id {}", expenseId);
+        Pool poolOfAccessOk = getPoolOfAccessOk(poolId);
+        Expense expense = poolOfAccessOk.getExpenses().stream().filter(expenseToFilter -> expenseToFilter.getIdentification().equals(expenseId))
+                .findAny().orElseThrow(() -> new NoSuchElementException("No such Expense"));
+        if (!expense.getCreator().equals(new Member(SecurityContextHolder.getContext().getAuthentication()))) {
+            throw new AccessDeniedException("You are not the creator of this expense");
+        }
+
+        //TODO: save file
+
     }
 }
