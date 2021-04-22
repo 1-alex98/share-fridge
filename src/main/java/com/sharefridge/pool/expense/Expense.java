@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,10 @@ public class Expense {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    private List<String> imageNames;
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date updated = Date.from(Instant.now());
+    private String imageName;
     private List<ExpenseItem> items;
     @NotNull
     private Member creator;
@@ -37,7 +41,7 @@ public class Expense {
     private List<Member> involved;
 
     public void setId(String id) {
-        if(id != null) return;
+        if (id != null) return;
         this.identification = UUID.randomUUID().toString();
     }
 }
