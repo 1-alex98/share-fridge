@@ -2,8 +2,10 @@ package com.sharefridge.pool;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
@@ -17,7 +19,8 @@ public class PoolController {
     @GetMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<Pool> getAllPools(@Param("id") String id){
-        return poolService.getAllPools(id);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Show this message");
+        //return poolService.getAllPools(id);
     }
 
     @GetMapping()

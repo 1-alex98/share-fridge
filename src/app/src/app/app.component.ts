@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "./communication/user.service";
 import {MemberClass} from "./communication/expense-class";
-import {ErrorInterceptor} from "./communication/error-interceptor.service";
+import {ErrorInterceptor} from "./communication/error.interceptor";
 
 @Component({
   selector: 'app-root',

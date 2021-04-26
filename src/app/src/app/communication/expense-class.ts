@@ -17,6 +17,7 @@ export class ExpenseClass{
   category:string;
   shop:string;
   description: string;
+  contentId: string;
   date: string;
   amount: number;
   imageName:string[];

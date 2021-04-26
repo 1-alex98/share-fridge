@@ -5,6 +5,8 @@ import com.sharefridge.pool.expense.item.ExpenseItem;
 import com.sharefridge.pool.member.Member;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.content.commons.annotations.ContentId;
+import org.springframework.content.commons.annotations.ContentLength;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -32,7 +34,8 @@ public class Expense {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updated = Date.from(Instant.now());
-    private String imageName;
+    private @ContentId UUID contentId;
+    private @ContentLength Long contentLen;
     private List<ExpenseItem> items;
     @NotNull
     private Member creator;

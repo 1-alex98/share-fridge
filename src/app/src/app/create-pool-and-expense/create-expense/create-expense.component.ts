@@ -7,6 +7,8 @@ import {PoolService} from "../../communication/pool.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgbCalendar, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {ExpenseService} from "../../communication/expense.service";
+import imageCompression from "browser-image-compression";
+import {UserService} from "../../communication/user.service";
 
 @Component({
   selector: 'app-create-expense',
@@ -30,10 +32,12 @@ export class CreateExpenseComponent implements OnInit {
   knownShops: string[];
   originalExpense: ExpenseClass;
   private uploadForm: any;
+  owner = true;
 
   constructor(private poolService: PoolService, private route: ActivatedRoute,
               private calendar: NgbCalendar, private expenseService: ExpenseService,
-              private router: Router, private formBuilder: FormBuilder) {
+              private router: Router, private formBuilder: FormBuilder,
+              private userService: UserService) {
   }
 
   get shop() {
@@ -55,8 +59,9 @@ export class CreateExpenseComponent implements OnInit {
         this.pool = pool;
         this.members = pool.members.map(value1 => MemberClass.fromObject(value1));
         this.selectedMembers = Object.assign([], this.members);
-        if (pathParameters["expenseId"]) {
-
+        let pathParameter = pathParameters["expenseId"];
+        if (pathParameter) {
+          this.loadOriginalExpense(pathParameter);
         }
         this.knownCategoriesAndShops();
       });
@@ -72,6 +77,29 @@ export class CreateExpenseComponent implements OnInit {
 
   }
 
+  private loadOriginalExpense(pathParameter: string) {
+    this.originalExpense = this.pool.expensesClass.find(expense=> expense.identification = pathParameter);
+    if(!this.originalExpense){
+      alert("No such Expense!");
+      return;
+    }
+    this.expenseForm.patchValue(this.originalExpense);
+    this.amount.setValue(this.originalExpense.amountNormalized());
+    this.setDateFromExpense();
+    this.selectedMembers = this.originalExpense.involved.map(member => MemberClass.fromObject(member));
+    this.isCollapsed = false;
+    this.userService.getMe().subscribe(me => {
+      this.owner = this.originalExpense.creator.id == me.id;
+    })
+  }
+
+  private setDateFromExpense() {
+    let split:string[] = this.originalExpense.date.split("-", 3);
+    this.date.year = Number(split[0]);
+    this.date.month = Number(split[1]);
+    this.date.day = Number(split[2]);
+  }
+
   onSubmit() {
     let dataForm = this.expenseForm.getRawValue();
     let expense = new Expense();
@@ -82,17 +110,27 @@ export class CreateExpenseComponent implements OnInit {
 
     this.expenseService.createExpense(expense, this.pool.id).subscribe(expenseId => {
       if (this.image.value) {
-        this.poolService.uploadImage(this.image.value, this.pool.id, expenseId).subscribe(value => {
-          this.backToPool();
-        }, error => {
-          console.error(error);
-          alert("Image upload failed");
-          this.backToPool();
-        })
+        this.uploadImage(expenseId);
       } else {
         this.backToPool();
       }
     })
+  }
+
+  private uploadImage(expenseId: string) {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true
+    };
+    imageCompression(this.image.value, options).then(compressedImage => {
+      this.poolService.uploadImage(compressedImage, this.pool.id, expenseId).subscribe(() => {
+        this.backToPool();
+      }, error => {
+        console.error(error);
+        this.backToPool();
+      })
+    }).catch(reason => console.error(reason));
   }
 
   onFileSelect(event) {

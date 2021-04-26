@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "version": "0.0.0",
+  "name": "share-fridge-frontend",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,9 +24,11 @@
     "@swimlane/ngx-charts": "^17.0.1",
     "angularx-qrcode": "^11.0.0",
     "bootstrap": "^4.6.0",
+    "browser-image-compression": "^1.0.14",
     "jdenticon": "^3.1.0",
     "jquery": "^3.6.0",
     "ngx-jdenticon": "^1.0.4",
+    "npm": "^7.11.1",
     "remixicon": "^2.5.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

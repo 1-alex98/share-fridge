@@ -10,6 +10,7 @@ export class Expense{
   shop:string;
   description: string;
   date: string;
+  contentId: string;
   amount: number;
   imageName:string[];
   creator:Member;

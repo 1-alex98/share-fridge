@@ -4,9 +4,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs';
 import {tap} from "rxjs/operators";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   currentError: EventEmitter<any> = new EventEmitter<any>();
 

@@ -4,17 +4,21 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.sharefridge.frame.JwtService;
 import com.sharefridge.frame.Utils;
 import com.sharefridge.pool.expense.Expense;
+import com.sharefridge.pool.expense.ExpenseContentStore;
 import com.sharefridge.pool.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -26,6 +30,7 @@ public class PoolService {
 
     private final PoolRepository poolRepository;
     private final JwtService jwtService;
+    private final ExpenseContentStore expenseContentStore;
 
     public List<Pool> getAllPools(String id){
         if(id == null || id.isEmpty()){
@@ -97,6 +102,7 @@ public class PoolService {
         return poolRepository.save(pool).getId();
     }
 
+    @SneakyThrows
     public void uploadImage(String poolId, String expenseId, MultipartFile file) {
         log.debug("Uploading File for expense with id {}", expenseId);
         Pool poolOfAccessOk = getPoolOfAccessOk(poolId);
@@ -105,8 +111,26 @@ public class PoolService {
         if (!expense.getCreator().equals(new Member(SecurityContextHolder.getContext().getAuthentication()))) {
             throw new AccessDeniedException("You are not the creator of this expense");
         }
+        if(file.getSize() >= 1_000_000){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Image exceeds maximum size of 1 MB");
+        }
 
-        //TODO: save file
+        expenseContentStore.setContent(expense, file.getInputStream());
+        expense.setUpdated(Date.from(Instant.now()));
+        poolRepository.save(poolOfAccessOk);
+    }
 
+    public InputStream getImage(String poolId, String expenseId) {
+        Pool poolOfAccessOk = getPoolOfAccessOk(poolId);
+        Expense expense = poolOfAccessOk.getExpenses().stream().filter(expenseToFilter -> expenseToFilter.getIdentification().equals(expenseId))
+                .findAny().orElseThrow(() -> new NoSuchElementException("No such Expense"));
+        if(expense.getContentId() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You requested an image for an expense that has no image uploaded.");
+        }
+        final InputStream content = expenseContentStore.getContent(expense);
+        if(content == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Can not find the image on the disk");
+        }
+        return content;
     }
 }

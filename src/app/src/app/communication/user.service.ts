@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from "rxjs";
-import {PoolClass} from "./pool-class";
-import {Pool} from "./pool";
 import {map, tap} from "rxjs/operators";
 import {MemberClass} from "./expense-class";
 import {HttpClient} from "@angular/common/http";
