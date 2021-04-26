@@ -22,8 +22,8 @@ export class PoolOverviewComponent implements OnInit {
 
     this.route.params.subscribe(value => {
       let poolId = value["id"];
-      this.poolService.getMyPools().subscribe(pools => {
-        this.pool = pools.find(currentPool => currentPool.id = poolId)
+      this.poolService.getPool(poolId).subscribe(poolWithThatId => {
+        this.pool = poolWithThatId
       })
     })
   }

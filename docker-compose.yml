@@ -2,9 +2,13 @@ version: '2.0'
 services:
   mongo:
     image: mongo:latest
+    env_file:
+      - config/mongo.env
     ports:
     - 127.0.0.1:27017:27017
   server:
     build: ./
+    env_file:
+      - config/share-fridge.env
     volumes:
       - /var/share-fridge:/var/share-fridge

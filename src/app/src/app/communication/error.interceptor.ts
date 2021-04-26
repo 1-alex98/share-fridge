@@ -3,20 +3,26 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 
 import {Observable} from 'rxjs';
 import {tap} from "rxjs/operators";
+import {ErrorService} from "./error.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  currentError: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private errorService: ErrorService) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
+    if(req.url.endsWith("/me")){
+      return next.handle(req)
+    }
 
     return next.handle(req)
       .pipe(
         tap(_ => {
           }
           , error => {
-            this.currentError.emit(error);
+            this.errorService.currentError.emit(error);
           })
       );
   }

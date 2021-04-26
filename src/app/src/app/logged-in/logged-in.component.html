@@ -5,8 +5,8 @@
 
 <h3>What to do:</h3>
 <ul>
-  <li><a routerLink="/pool/create">Create a Fridge</a></li>
-  <li><a routerLink="/pool/view">Open the newly created fridge</a> and click on Edit/Invite and generate an invite Link
+  <li><a routerLink="/pool/create" class="{{loggedIn?'':'btn disabled p-0'}}">Create a Fridge {{loggedIn?'' : '(Sign in first)'}}</a></li>
+  <li><a routerLink="/pool/view" class="{{loggedIn?'':'btn disabled p-0'}}">Open the newly created fridge {{loggedIn?'' : '(Sign in first)'}}</a> and click on Edit/Invite and generate an invite Link
   </li>
   <li>Send the invite link to other members of your household. They must open that link to join.</li>
   <li>Create entries called expenses about what you bought.</li>

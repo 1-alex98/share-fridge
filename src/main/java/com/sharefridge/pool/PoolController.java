@@ -19,8 +19,7 @@ public class PoolController {
     @GetMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<Pool> getAllPools(@Param("id") String id){
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Show this message");
-        //return poolService.getAllPools(id);
+        return poolService.getAllPools(id);
     }
 
     @GetMapping()

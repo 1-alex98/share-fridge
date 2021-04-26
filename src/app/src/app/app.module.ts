@@ -12,6 +12,8 @@ import {NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModule} from "./info/info.module";
 import {FormsModule} from "@angular/forms";
 import {ErrorInterceptor} from "./communication/error.interceptor";
+import {ErrorService} from "./communication/error.service";
+import {StatsModule} from "./stats/stats.module";
 
 @NgModule({
   declarations: [
@@ -25,15 +27,17 @@ import {ErrorInterceptor} from "./communication/error.interceptor";
     BrowserModule,
     CreatePoolAndExpenseModule,
     ViewPoolModule,
-    AppRoutingModule,
+    StatsModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorInterceptor,
-    multi: true
+    multi: true,
+    deps: [ErrorService]
   }],
   bootstrap: [AppComponent]
 })
