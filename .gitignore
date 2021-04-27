@@ -32,7 +32,8 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
-images-uploaded
+images-uploaded/
+data/
 
 ### VS Code ###
 .vscode/
