@@ -29,7 +29,7 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config/traefik:/etc/traefik:/etc/traefik
+      - ./config/traefik:/etc/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.reverse-proxy.entryPoints=web-secure"
