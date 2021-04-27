@@ -2,7 +2,9 @@ FROM openjdk:15-jdk-alpine
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 WORKDIR ~/app
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=*.jar
 COPY ${JAR_FILE} app.jar
-VOLUME ./images-uploaded
-ENTRYPOINT ["java","-jar","/app.jar"]
+USER root:root
+RUN chown -R spring:spring .
+USER spring:spring
+ENTRYPOINT ["java","-jar","app.jar"]

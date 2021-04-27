@@ -1,16 +1,40 @@
-version: '2.0'
+version: '3.3'
 services:
   mongo:
+    container_name: mongo
     image: mongo:latest
     volumes:
     - ./data:/data/db
     env_file:
       - config/mongo.env
-    ports:
-    - 127.0.0.1:27017:27017
   server:
-    build: ./
+    container_name: server
+    build: ./src/docker
     env_file:
       - config/share-fridge.env
     volumes:
       - /var/share-fridge:/var/share-fridge
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-website.rule=Host(`share-fridge.net`)"
+      - "traefik.http.routers.faf-website.entryPoints=web-secure"
+      - "traefik.http.services.faf-website.loadbalancer.server.port=8080"
+  reverse-proxy:
+    image: traefik:v2.4
+    command: --api.insecure=true --providers.docker
+    env_file:
+      - ./config/traefik/traefik.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/faf-traefik:/etc/traefik:/etc/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-traefik.entryPoints=web-secure"
+      - "traefik.http.routers.faf-traefik.rule=Host(`traefik.share-fridge.net)"
+      - "traefik.http.routers.faf-traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
+      - "traefik.http.routers.faf-traefik.service=api@internal"
+      - "traefik.http.services.faf-traefik.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
