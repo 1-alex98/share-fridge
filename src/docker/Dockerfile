@@ -7,4 +7,5 @@ COPY ${JAR_FILE} app.jar
 USER root:root
 RUN chown -R spring:spring .
 USER spring:spring
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]

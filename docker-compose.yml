@@ -16,9 +16,9 @@ services:
       - /var/share-fridge:/var/share-fridge
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-website.rule=Host(`share-fridge.net`)"
-      - "traefik.http.routers.faf-website.entryPoints=web-secure"
-      - "traefik.http.services.faf-website.loadbalancer.server.port=8080"
+      - "traefik.http.routers.server.rule=Host(`share-fridge.net`)"
+      - "traefik.http.routers.server.entryPoints=web-secure"
+      - "traefik.http.services.server.loadbalancer.server.port=8080"
   reverse-proxy:
     image: traefik:v2.4
     command: --api.insecure=true --providers.docker
@@ -29,12 +29,12 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config/faf-traefik:/etc/traefik:/etc/traefik
+      - ./config/traefik:/etc/traefik:/etc/traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-traefik.entryPoints=web-secure"
-      - "traefik.http.routers.faf-traefik.rule=Host(`traefik.share-fridge.net)"
-      - "traefik.http.routers.faf-traefik.middlewares=auth"
+      - "traefik.http.routers.reverse-proxy.entryPoints=web-secure"
+      - "traefik.http.routers.reverse-proxy.rule=Host(`traefik.share-fridge.net)"
+      - "traefik.http.routers.reverse-proxy.middlewares=auth"
       - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
-      - "traefik.http.routers.faf-traefik.service=api@internal"
-      - "traefik.http.services.faf-traefik.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
+      - "traefik.http.routers.reverse-proxy.service=api@internal"
+      - "traefik.http.services.reverse-proxy.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
