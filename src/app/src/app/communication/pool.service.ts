@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Pool} from "./pool";
 import {map} from "rxjs/operators";
@@ -21,9 +21,16 @@ export class PoolService {
     return this.http.get<Pool[]>(this.BASE_URL_API + "pool", {params: {id: id}}).pipe(map(pool => PoolClass.fromObject(pool[0])));
   }
 
-
   createPool(pool: any):Observable<string> {
     return this.http.post<Pool>(this.BASE_URL_API + "pool", pool).pipe(
+      map(result => {
+        return result.id;
+      })
+    )
+  }
+
+  updatePool(pool: any):Observable<string> {
+    return this.http.patch<Pool>(this.BASE_URL_API + "pool", pool).pipe(
       map(result => {
         return result.id;
       })
@@ -43,5 +50,15 @@ export class PoolService {
     formData.append('file', value);
 
     return this.http.post<any>(this.BASE_URL_API + "pool/" + poolId + "/expense/" + expenseId + "/image", formData);
+  }
+
+  deletePool(pool: any):Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: pool
+    }
+    return this.http.delete(this.BASE_URL_API + "pool", options)
   }
 }

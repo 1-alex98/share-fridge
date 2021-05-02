@@ -62,6 +62,8 @@ export class CreateExpenseComponent implements OnInit {
         let pathParameter = pathParameters["expenseId"];
         if (pathParameter) {
           this.loadOriginalExpense(pathParameter);
+        }else {
+          this.date = this.calendar.getToday();
         }
         this.knownCategoriesAndShops();
       });
@@ -71,10 +73,7 @@ export class CreateExpenseComponent implements OnInit {
       image: ['']
     });
 
-    this.date = this.calendar.getToday();
-
     this.defaultCategoriesAndShops();
-
   }
 
   private loadOriginalExpense(pathParameter: string) {

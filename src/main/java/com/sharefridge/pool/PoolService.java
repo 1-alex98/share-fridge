@@ -133,4 +133,11 @@ public class PoolService {
         }
         return content;
     }
+
+    public void delete(Pool userSubmittedPool) {
+        final Pool poolOfAccessOk = getPoolOfAccessOk(userSubmittedPool.getId());
+
+        poolOfAccessOk.getExpenses().forEach(expenseContentStore::unsetContent);
+        poolRepository.delete(poolOfAccessOk);
+    }
 }

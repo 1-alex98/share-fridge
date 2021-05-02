@@ -5,6 +5,8 @@ services:
     image: mongo:latest
     volumes:
       - ./data:/data/db
+    ports:
+    - "127.0.0.1:27017:27017"
     env_file:
       - config/mongo.env
   server:

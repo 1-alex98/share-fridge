@@ -38,10 +38,16 @@ export class CreateViewFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.poolService.createPool(this.poolForm.getRawValue())
-      .subscribe(id=>{
-        this.router.navigate(["/pool/view/"+id])
-      })
+    let createOrUpdate;
+    if(this.pool){
+      createOrUpdate = this.poolService.updatePool(this.poolForm.getRawValue())
+    }else {
+      createOrUpdate = this.poolService.createPool(this.poolForm.getRawValue())
+    }
+
+    createOrUpdate.subscribe(id=>{
+      this.router.navigate(["/pool/view/"+id])
+    })
   }
 
   get name() { return this.poolForm.get('name'); }
@@ -62,5 +68,9 @@ export class CreateViewFormComponent implements OnInit {
 
   openModal(content){
     this.modalService.open(content,  {ariaLabelledBy: 'modal-basic-title'});
+  }
+
+  delete() {
+    this.poolService.deletePool(this.pool).subscribe(value => this.router.navigate(["/pool", "view"]))
   }
 }

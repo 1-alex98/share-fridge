@@ -23,7 +23,22 @@
   </form>
   <hr/>
   <div *ngIf="pool" class="mt-4">
+    <button class="btn btn-outline-danger mr-2" (click)="openModal(delete_modal)" ><i class="ri-delete-bin-line"></i> Delete</button>
     <button class="btn btn-primary" (click)="generateInvite(content)" ><i class="ri-mail-add-line"></i> Generate Invite link</button>
+
+    <ng-template #delete_modal let-modal_delete>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title-delete">Your about to delete a Fridge!!!</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal_delete.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Your are about to delete the Fridge with the title:</p>
+        <h2>{{pool.name}}</h2>
+        <button class="btn btn-outline-danger mr-2" (click)="delete()" ><i class="ri-delete-bin-line"></i> Delete</button>
+      </div>
+    </ng-template>
 
     <ng-template #content let-modal>
       <div class="modal-header">
@@ -43,8 +58,8 @@
         <p>Or let him scan this QR-Code:</p>
         <qrcode *ngIf="tokenUrl" [qrdata]="tokenUrl" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
       </div>
-    </ng-template>
 
+    </ng-template>
 
   </div>
 </div>

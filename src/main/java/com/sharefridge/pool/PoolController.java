@@ -47,4 +47,10 @@ public class PoolController {
     public Pool patchPool(@RequestBody Pool pool){
         return poolService.patchPool(pool);
     }
+
+    @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void deletePool(@RequestBody Pool pool){
+        poolService.delete(pool);
+    }
 }
