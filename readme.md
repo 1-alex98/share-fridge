@@ -1,2 +1,2 @@
 # Share-Fridge
-Code for [Share-Fridge.net](https://share-fridge.net)
+Code for [Share-Fridge.net](https://share-fridge.net). App to register and share expenses for your shared flat/fridge...
